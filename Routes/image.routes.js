@@ -26,17 +26,17 @@ router.get("/:_id", async (req, res) => {
     res.status(200).send({ msg: "uploads file", image });
 });
 
-router.post("/uploads", upload, (req, res) => {
+router.post("/uploads", upload, async (req, res) => {
     
         try {
             const newimage = new Image({
                 image: req.file.buffer,
+                name: req.body.name,
+                email: req.body.email
             });
             res.set("Content-Type", "image/png");
-            newimage
-                .save()
-
-               res.status(200).send({ msg: "successufly uploudas", newimage })
+            await newimage.save()
+            res.status(200).send({ msg: "successufly uploudas", newimage })
         } catch (err) {
             res.status(400).send({ msg: "successufly uploudas", err })
         }
